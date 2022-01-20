@@ -107,7 +107,7 @@ def get_single_animal(id):
         animal.customer = customer.__dict__
         animal.location = location.__dict__
 
-        return json.dumps(animal.__dict__)
+    return json.dumps(animal.__dict__)
 
 
 def create_animal(new_animal):
@@ -116,12 +116,11 @@ def create_animal(new_animal):
 
         db_cursor.execute("""
         INSERT INTO Animal
-            ( name, breed, status, location_id, customer_id )
+            ( name, status, breed, customer_id, location_id )
         VALUES
             ( ?, ?, ?, ?, ?);
-        """, (new_animal['name'], new_animal['breed'],
-              new_animal['status'], new_animal['location_id'],
-              new_animal['customer_id']))
+        """, (new_animal['name'], new_animal['status'], new_animal['breed'],
+               new_animal['customer_id'], new_animal['location_id']))
 
         # The `lastrowid` property on the cursor will return
         # the primary key of the last thing that got added to

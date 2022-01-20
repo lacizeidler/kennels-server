@@ -147,7 +147,7 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         # Encode the new animal and send in response
         # wfile = write file
-        self.wfile.write(f"{new_animal}".encode())
+        self.wfile.write(f'{new_animal}'.encode())
 
         # Initialize new animal
         new_customer = None
@@ -171,7 +171,7 @@ class HandleRequests(BaseHTTPRequestHandler):
             new_employee = create_employee(post_body)
 
         # Encode the new employee and send in response
-        self.wfile.write(f"{new_employee}".encode())
+        self.wfile.write(f'{new_employee}'.encode())
 
         # Initialize new animal
         new_location = None

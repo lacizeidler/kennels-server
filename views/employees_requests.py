@@ -64,7 +64,7 @@ def create_employee(employee):
             (name, address, location_id)     
         VALUES  
             (?,?,?);             
-        """, (employee['name'], employee['address'], employee['location_id']))
+        """, (employee['name'], employee['address'], employee['locationId']))
 
         id = db_cursor.lastrowid
 
