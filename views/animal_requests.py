@@ -2,7 +2,9 @@ import json
 import sqlite3
 
 from models import Animal
+from models.customer import Customer
 from models.location import Location
+
 
 def get_all_animals():
     # Open a connection to the database
@@ -41,12 +43,13 @@ def get_all_animals():
         # Iterate list of data returned from database
         for row in dataset:
 
-    # Create an animal instance from the current row
+            # Create an animal instance from the current row
             animal = Animal(row['id'], row['name'], row['breed'], row['status'],
                             row['location_id'], row['customer_id'])
 
             # Create a Location instance from the current row
-            location = Location(row['id'], row['location_name'], row['location_address'])
+            location = Location(
+                row['id'], row['location_name'], row['location_address'])
 
             # Add the dictionary representation of the location to the animal
             animal.location = location.__dict__
@@ -75,8 +78,18 @@ def get_single_animal(id):
             a.status,
             a.breed,
             a.customer_id,
-            a.location_id
+            a.location_id,
+            l.name customer_name,
+            l.address customer_address,
+            l.email customer_email,
+            l.password customer_password,
+            b.name location_name,
+            b.address location_address
         FROM Animal a
+        JOIN Customer l
+            ON l.id = a.customer_id
+        JOIN Location b
+            ON b.id = a.location_id
         WHERE a.id = ?
         """, (id, ))
 
@@ -86,6 +99,13 @@ def get_single_animal(id):
         # Create an animal instance from the current row
         animal = Animal(data['id'], data['name'], data['status'], data['breed'],
                         data['customer_id'], data['location_id'])
+        customer = Customer(data['id'], data['customer_name'], data['customer_address'],
+                            data['customer_email'], data['customer_password'])
+        location = Location(
+            data['id'], data['location_name'], data['location_address'])
+
+        animal.customer = customer.__dict__
+        animal.location = location.__dict__
 
         return json.dumps(animal.__dict__)
 
@@ -112,7 +132,6 @@ def create_animal(new_animal):
         # was sent by the client so that the client sees the
         # primary key in the response.
         new_animal['id'] = id
-
 
     return json.dumps(new_animal)
 

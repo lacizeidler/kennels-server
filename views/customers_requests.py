@@ -3,27 +3,6 @@ import sqlite3
 
 from models import Customer
 
-CUSTOMERS = [
-    {
-        "id": 1,
-        "name": "Alex Miller",
-        "email": "alex@miller.com",
-        "status": "Active"
-    },
-    {
-        "id": 2,
-        "name": "Leah Hopp",
-        "email": "leah@hopp.com",
-        "status": "Active"
-    },
-    {
-        "id": 3,
-        "name": "Melissa Smith",
-        "email": "melissa@smith.com",
-        "status": "Active"
-    }
-]
-
 
 def get_all_customers():
     # Open a connection to the database
@@ -109,19 +88,29 @@ def get_single_customer(id):
 
 def create_customer(customer):
     # Get the id value of the last customer in the list
-    max_id = CUSTOMERS[-1]["id"]
+    with sqlite3.connect("./kennel.sqlite3") as conn:
+        db_cursor = conn.cursor()
 
-    # Add 1 to whatever that number is
-    new_id = max_id + 1
+        db_cursor.execute("""
+        INSERT INTO Customer
+            ( name, address, email, password )
+        VALUES
+            ( ?, ?, ?, ?, ?);
+        """, (customer['name'], customer['address'],
+              customer['email'], customer['password']))
 
-    # Add an `id` property to the customer dictionary
-    customer["id"] = new_id
+        # The `lastrowid` property on the cursor will return
+        # the primary key of the last thing that got added to
+        # the database.
+        id = db_cursor.lastrowid
 
-    # Add the customer dictionary to the list
-    CUSTOMERS.append(customer)
+        # Add the `id` property to the animal dictionary that
+        # was sent by the client so that the client sees the
+        # primary key in the response.
+        customer['id'] = id
 
-    # Return the dictionary with `id` property added
-    return customer
+
+    return json.dumps(customer)
 
 
 def delete_customer(id):

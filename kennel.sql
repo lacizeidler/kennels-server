@@ -30,7 +30,14 @@ CREATE TABLE `Employee` (
 	`address`	TEXT NOT NULL,
 	`location_id` INTEGER NOT NULL,
 	FOREIGN KEY(`location_id`) REFERENCES `Location`(`id`)
+);
 
+CREATE TABLE `EmployeeAnimals` (
+	`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	`employee_id` INTEGER NOT NULL,
+	`animal_id` INTEGER NOT NULL,
+	FOREIGN KEY(`employee_id`) REFERENCES `Employee`(`id`),
+	FOREIGN KEY(`animal_id`) REFERENCES `Animal`(`id`)
 );
 
 INSERT INTO `Location` VALUES (null, 'Nashville North', "64 Washington Heights");
@@ -56,3 +63,11 @@ INSERT INTO `Animal` VALUES (null, "Jax", "Treatment", "Beagle", 1, 1);
 INSERT INTO `Animal` VALUES (null, "Falafel", "Treatment", "Siamese", 4, 2);
 INSERT INTO `Animal` VALUES (null, "Doodles", "Kennel", "Poodle", 3, 1);
 INSERT INTO `Animal` VALUES (null, "Daps", "Kennel", "Boxer", 2, 2);
+
+INSERT INTO `EmployeeAnimals` VALUES (null, 2, 3);
+INSERT INTO `EmployeeAnimals` VALUES (null, 1, 4);
+INSERT INTO `EmployeeAnimals` VALUES (null, 4, 5);
+INSERT INTO `EmployeeAnimals` VALUES (null, 4, 7);
+INSERT INTO `EmployeeAnimals` VALUES (null, 2, 8);
+
+DROP TABLE IF EXISTS `EmployeeAnimals`

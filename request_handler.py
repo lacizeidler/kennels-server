@@ -6,6 +6,7 @@ from views import (create_animal, create_customer, create_employee,
                    get_all_employees, get_all_locations, get_single_animal,
                    get_single_customer, get_single_employee,
                    get_single_location, delete_animal, delete_customer, delete_location, delete_employee, update_animal, update_customer, update_employee, update_location, get_customers_by_email)
+from views.employee_animal_requests import get_all_employee_animals, get_single_employee_animal
 
 # Here's a class. It inherits from another class.
 # For now, think of a class as a container for functions that
@@ -102,6 +103,11 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_employee(id)}"
                 else:
                     response = f"{get_all_employees()}"
+            elif resource == "employeeAnimals":
+                if id is not None:
+                    response = f"{get_single_employee_animal(id)}"
+                else:
+                    response = f"{get_all_employee_animals()}"
 
         # Response from parse_url() is a tuple with 3
         # items in it, which means the request was for
